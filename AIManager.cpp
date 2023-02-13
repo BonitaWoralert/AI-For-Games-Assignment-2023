@@ -113,6 +113,7 @@ void AIManager::mouseUp(int x, int y)
 	//	return;
 
     // Tutorial todo here
+    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -134,9 +135,14 @@ void AIManager::keyDown(WPARAM param)
     const WPARAM key_a = 65;
     const WPARAM key_s = 83;
     const WPARAM key_t = 84;
+    const WPARAM key_space = 32;
 
     switch (param)
     {
+    case key_space:
+    {
+        break;
+    }
     case VK_NUMPAD0:
     {
         OutputDebugStringA("0 pressed \n");
@@ -240,7 +246,7 @@ bool AIManager::checkForCollisions()
     // does the car bounding sphere collide with the pickup bounding sphere?
     if (boundingSphereCar.Intersects(boundingSpherePU))
     {
-        OutputDebugStringA("A collision has occurred!\n");
+        OutputDebugStringA("Pickup passenger collision\n");
         m_pickups[0]->hasCollided();
         setRandomPickupPosition(m_pickups[0]);
 

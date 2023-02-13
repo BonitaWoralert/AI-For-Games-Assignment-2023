@@ -1,0 +1,3 @@
+﻿  AIManager.cpp
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(17,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+  AIFramework.vcxproj -> C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

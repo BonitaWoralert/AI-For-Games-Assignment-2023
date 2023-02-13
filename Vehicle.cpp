@@ -76,6 +76,10 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
 	// note: this has been done for you in the updateMessages function. 
+	MessagePosition message;
+	message.name = name;
+	message.position = positionTo;
+	addMessage(message);
 
 	//addMessage(message);
 }
@@ -129,6 +133,7 @@ void Vehicle::messageReceived(MessagePosition message)
 	{
 		// Tutorial Todo
 		// stop the car (how?)
+		m_forceMotion.clearForce();
 	}
 }
 
