@@ -113,7 +113,8 @@ void AIManager::mouseUp(int x, int y)
 	//	return;
 
     // Tutorial todo here
-    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
+    //m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
+    m_pRedCar->forceTemp(Vector2D(x, y), SEEK_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)

@@ -2,8 +2,6 @@
 
 #include "Vector2D.h"
 
-
-
 class ForceMotion {
 
 private:

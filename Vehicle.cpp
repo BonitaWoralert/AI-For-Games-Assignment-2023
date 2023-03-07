@@ -84,6 +84,31 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 	//addMessage(message);
 }
 
+void Vehicle::forceTemp(Vector2D positionTo, string name)
+{
+	// create a vector from the position to, and the current car position
+	Vector2D posFrom = getPosition();
+	Vector2D force = positionTo - posFrom;
+	Vector2D force2 = force;
+	Vector2D reverseForce = force * -1;
+
+	// normalise this (make it length 1)
+	force.Normalize();
+	
+	//getForceMotion()->applyForce(force);
+	getForceMotion()->accummulateForce(force);
+	getForceMotion()->accummulateForce(reverseForce);
+
+	// Tutorial todo
+	// create a message called 'SEEK' which detects when the car has reached a certain point
+	// note: this has been done for you in the updateMessages function. 
+	MessagePosition message;
+	message.name = name;
+	message.position = positionTo;
+	addMessage(message);
+
+}
+
 void Vehicle::setWaypointManager(WaypointManager* wpm)
 {
 	m_waypointManager = wpm;
