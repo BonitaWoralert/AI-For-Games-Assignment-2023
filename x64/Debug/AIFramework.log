@@ -1,5 +1,4 @@
 ﻿  Vehicle.cpp
 C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(17,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(96,17): warning C4552: '+': result of expression not used
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(127,42): warning C4100: 'deltaTime': unreferenced formal parameter
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(129,42): warning C4100: 'deltaTime': unreferenced formal parameter
   AIFramework.vcxproj -> C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

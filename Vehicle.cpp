@@ -88,12 +88,14 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 {
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
-	Vector2D force = positionTo - posFrom;
+	force = positionTo - posFrom;
+	
+	// normalise this (make it length 1)
+	force.Normalize();
+
 	Vector2D force2 = force;
 	Vector2D reverseForce = force * -1;
 
-	// normalise this (make it length 1)
-	force.Normalize();
 	
 	//getForceMotion()->applyForce(force);
 	getForceMotion()->accummulateForce(force);
@@ -136,14 +138,21 @@ void Vehicle::updateMessages(const float deltaTime)
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
 			Vector2D differenceVector = getPosition() - msg.position;
-			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
-			if (differenceVector.Length() < SEEK_RADIUS)
+			if (differenceVector.Length() < BRAKING_RADIUS)
 			{
-				messageReceived(msg);
 
-				// delete the message. This will also assign(increment) the iterator to be the next item in the list
-				messageIterator = m_vecMessages.erase(messageIterator);
-				continue; // continue the next loop (we don't want to increment below as this will skip an item)
+				//slow down car by calculating remaining distance aS PERCENTAGE
+				//apply braking force in oppoiste direction by force * percentage
+
+				// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
+				if (differenceVector.Length() < SEEK_RADIUS)
+				{
+					messageReceived(msg);
+
+					// delete the message. This will also assign(increment) the iterator to be the next item in the list
+					messageIterator = m_vecMessages.erase(messageIterator);
+					continue; // continue the next loop (we don't want to increment below as this will skip an item)
+				}
 			}
 		}
 		messageIterator++; // incremenet the iterator

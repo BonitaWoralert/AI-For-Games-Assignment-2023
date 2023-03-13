@@ -54,6 +54,9 @@ protected: // protected methods
 protected: // protected properties
 	Vector2D m_currentPosition;
 	Vector2D m_lastPosition;
+	Vector2D force;
+
+
 	WaypointManager* m_waypointManager;
 	ForceMotion m_forceMotion;
 
