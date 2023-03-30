@@ -3,6 +3,7 @@
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
+#define BRAKE_RADIUS 10
 
 Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 {
@@ -93,8 +94,8 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 	// normalise this (make it length 1)
 	force.Normalize();
 
-	Vector2D force2 = force;
-	Vector2D reverseForce = force * -1;
+	force2 = force;
+	//reverseForce = force * -1;
 
 	
 	//getForceMotion()->applyForce(force);
@@ -138,11 +139,14 @@ void Vehicle::updateMessages(const float deltaTime)
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
 			Vector2D differenceVector = getPosition() - msg.position;
-			if (differenceVector.Length() < BRAKING_RADIUS)
+			if (differenceVector.Length() < BRAKE_RADIUS)
 			{
-
+				/*i give up. i don't understand at all.*/
+				// 
 				//slow down car by calculating remaining distance aS PERCENTAGE
 				//apply braking force in oppoiste direction by force * percentage
+
+
 
 				// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 				if (differenceVector.Length() < SEEK_RADIUS)

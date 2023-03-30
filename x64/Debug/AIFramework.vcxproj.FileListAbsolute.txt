@@ -1,1 +1,2 @@
 C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

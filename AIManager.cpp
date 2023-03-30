@@ -7,11 +7,14 @@
 #include "constants.h"
 #include "ForceHelper.h"
 
+
+
 // AI Manager
 
 AIManager::AIManager()
 {
     m_pRedCar = nullptr;
+    std::srand(std::time(nullptr)); //use current time as seed for rand
 }
 
 AIManager::~AIManager()
@@ -42,6 +45,13 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pRedCar = new Vehicle();
     HRESULT hr = m_pRedCar->initMesh(pd3dDevice, carColour::redCar);
     m_pRedCar->setPosition(Vector2D(xPos, yPos));
+    if (FAILED(hr))
+        return hr;
+
+    //create blue vehicle
+    m_pBlueCar = new Vehicle();
+    hr = m_pBlueCar->initMesh(pd3dDevice, carColour::blueCar);
+    m_pBlueCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
 
@@ -84,7 +94,8 @@ void AIManager::update(const float fDeltaTime)
     }
 
 	// draw the waypoints nearest to the red car
-	/*
+	
+    
     Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
 	if (wp != nullptr)
 	{
@@ -94,8 +105,8 @@ void AIManager::update(const float fDeltaTime)
 			AddItemToDrawList(wp);
 		}
 	}
-    */
-
+    
+    
     // update and draw the red car (and check for pickup collisions)
 	if (m_pRedCar != nullptr)
 	{
@@ -103,6 +114,14 @@ void AIManager::update(const float fDeltaTime)
 		checkForCollisions();
 		AddItemToDrawList(m_pRedCar);
 	}
+
+    //update and draw blue car
+    if (m_pBlueCar != nullptr)
+    {
+        m_pBlueCar->update(fDeltaTime);
+        Wander(m_pBlueCar);
+        AddItemToDrawList(m_pBlueCar);
+    }
 }
 
 void AIManager::mouseUp(int x, int y)
@@ -161,6 +180,11 @@ void AIManager::keyDown(WPARAM param)
     }
     case key_a:
     {
+        //go to random waypoint
+        
+        Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
+        m_pRedCar->forceTemp(randWp->getPosition(), SEEK_MESSAGE);
+
         OutputDebugStringA("a Down \n");
         break;
     }
@@ -190,6 +214,12 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
     if (wp) {
         pickup->setPosition(wp->getPosition());
     }
+}
+
+void AIManager::Wander(Vehicle* car)
+{
+    Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount()); //pick random waypoint
+    car->forceTemp(randWp->getPosition(), SEEK_MESSAGE); //get position and go to wp
 }
 
 /*

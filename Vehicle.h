@@ -16,9 +16,6 @@ typedef struct MessagePosition
 	string name;
 };
 
-
-
-
 enum class carColour
 {
 	redCar,
@@ -55,6 +52,8 @@ protected: // protected properties
 	Vector2D m_currentPosition;
 	Vector2D m_lastPosition;
 	Vector2D force;
+	Vector2D force2;
+	Vector2D reverseForce;
 
 
 	WaypointManager* m_waypointManager;
