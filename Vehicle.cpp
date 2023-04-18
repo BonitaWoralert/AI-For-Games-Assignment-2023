@@ -3,7 +3,7 @@
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
-#define BRAKE_RADIUS 10
+#define BRAKE_RADIUS 1000000000000000000
 
 Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 {
@@ -93,14 +93,10 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 	
 	// normalise this (make it length 1)
 	force.Normalize();
-
-	force2 = force;
-	//reverseForce = force * -1;
-
 	
 	//getForceMotion()->applyForce(force);
 	getForceMotion()->accummulateForce(force);
-	getForceMotion()->accummulateForce(reverseForce);
+	getForceMotion()->accummulateForce(brakingForce);
 
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
@@ -138,14 +134,27 @@ void Vehicle::updateMessages(const float deltaTime)
 		MessagePosition msg = *messageIterator;
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
-			Vector2D differenceVector = getPosition() - msg.position;
+			Vector2D differenceVector = msg.position - getPosition();
 			if (differenceVector.Length() < BRAKE_RADIUS)
 			{
-				/*i give up. i don't understand at all.*/
+				int test = differenceVector.Length();
+				Vector2D currentTravel = msg.position - getPosition();
+				int test2 = currentTravel.Length();
+
+				float percentTravelled = currentTravel.Length() / differenceVector.Length();
+				brakingForce = force * percentTravelled;
 				// 
 				//slow down car by calculating remaining distance aS PERCENTAGE
 				//apply braking force in oppoiste direction by force * percentage
 
+				/*
+				
+				currentLength = (end pos - current pos).length 
+				totalLength = (endpos - startpos).length
+
+				currentLength / totalLength = percentTravelled;
+				brakeForce *= percentTravelled;
+				*/
 
 
 				// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right

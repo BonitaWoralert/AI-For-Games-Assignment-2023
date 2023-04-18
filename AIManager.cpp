@@ -96,7 +96,7 @@ void AIManager::update(const float fDeltaTime)
 	// draw the waypoints nearest to the red car
 	
     
-    Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
+    Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pBlueCar->getPosition());
 	if (wp != nullptr)
 	{
 		vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
@@ -218,8 +218,19 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
 
 void AIManager::Wander(Vehicle* car)
 {
+    /*
     Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount()); //pick random waypoint
     car->forceTemp(randWp->getPosition(), SEEK_MESSAGE); //get position and go to wp
+    */
+    
+    Waypoint* randWp = m_waypointManager.getNearestWaypoint(car->getPosition());
+    if (randWp != nullptr)
+    {
+        vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(randWp);
+        randWp = m_waypointManager.getWaypoint(std::rand() % vwps.size()); //pick rand from neighbour waypoints
+        car->forceTemp(randWp->getPosition(), SEEK_MESSAGE); //get pos and go to wp
+    }
+    
 }
 
 /*

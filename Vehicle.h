@@ -52,8 +52,7 @@ protected: // protected properties
 	Vector2D m_currentPosition;
 	Vector2D m_lastPosition;
 	Vector2D force;
-	Vector2D force2;
-	Vector2D reverseForce;
+	Vector2D brakingForce;
 
 
 	WaypointManager* m_waypointManager;
