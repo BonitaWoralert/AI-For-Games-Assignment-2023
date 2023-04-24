@@ -39,6 +39,7 @@ public:
 
 	void applyForceToPosition(const Vector2D& positionTo, string name = "");
 	void forceTemp(Vector2D positionTo, string name);
+	void arrive(Vector2D positionTo, string name);
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
 

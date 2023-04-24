@@ -3,7 +3,7 @@
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
-#define BRAKE_RADIUS 1000000000000000000
+#define MAX_SPEED 1
 
 Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 {
@@ -95,7 +95,7 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 	// normalise this (make it length 1)
 	force.Normalize();
 	
-	if (getForceMotion()->getVelocity().Length() < 1)
+	if (getForceMotion()->getVelocity().Length() < MAX_SPEED)
 	{
 	//getForceMotion()->applyForce(force);
 	getForceMotion()->accummulateForce(force);
@@ -109,6 +109,16 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 	message.name = name;
 	message.position = positionTo;
 	addMessage(message);
+
+}
+
+void Vehicle::arrive(Vector2D positionTo, string name)
+{
+	float deceleration = 0.5;
+	Vector2D posFrom = getPosition();
+	Vector2D desiredvelocity = positionTo - posFrom;
+	desiredvelocity.Normalize();
+	desiredvelocity*deceleration;
 
 }
 

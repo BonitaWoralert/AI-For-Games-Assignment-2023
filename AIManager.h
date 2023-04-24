@@ -33,6 +33,7 @@ private:
 	Vehicle*				m_pRedCar = nullptr;
 	Vehicle*				m_pBlueCar = nullptr;
 	WaypointManager			m_waypointManager;
-
+	bool					m_seek = false;
+	bool					m_flee = false;
 };
 

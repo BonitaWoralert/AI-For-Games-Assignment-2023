@@ -106,7 +106,16 @@ void AIManager::update(const float fDeltaTime)
 		}
 	}
     
+    if (m_seek)
+    {
+        Seek(m_pRedCar, m_pBlueCar);
+    }
     
+    if (m_flee)
+    {
+        Flee(m_pRedCar, m_pBlueCar);
+    }
+
     // update and draw the red car (and check for pickup collisions)
 	if (m_pRedCar != nullptr)
 	{
@@ -126,13 +135,6 @@ void AIManager::update(const float fDeltaTime)
 
 void AIManager::mouseUp(int x, int y)
 {
-    // HINT you will find this useful later on...
-	//Waypoint* wp = m_waypointManager.getNearestWaypoint(Vector2D(x, y));
-	//if (wp == nullptr)
-	//	return;
-
-    // Tutorial todo here
-    //m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
     m_pRedCar->forceTemp(Vector2D(x, y), SEEK_MESSAGE);
 }
 
@@ -165,12 +167,14 @@ void AIManager::keyDown(WPARAM param)
     }
     case VK_NUMPAD0:
     {
-        Seek(m_pRedCar, m_pBlueCar);
+        OutputDebugStringA("seeking");
+        m_seek = !m_seek;
         break;
     }
     case VK_NUMPAD1:
     {
-        Flee(m_pRedCar, m_pBlueCar);
+        OutputDebugStringA("fleeing");
+        m_flee = !m_flee;
         break;
     }
     case VK_NUMPAD2:
@@ -229,10 +233,16 @@ void AIManager::Wander(Vehicle* car)
 
 void AIManager::Seek(Vehicle* seeker, Vehicle* target)
 {
+    seeker->forceTemp(target->getPosition(), SEEK_MESSAGE); //go towards target
 }
 
 void AIManager::Flee(Vehicle* flee, Vehicle* target)
 {
+    if (flee->getPosition().Distance(target->getPosition()) < 350.0f) // check distance between fleeing car and target
+    {
+        Vector2D location = target->getPosition().GetReverse(); //reverse the position of the target
+        flee->forceTemp(location, SEEK_MESSAGE);
+    }
 }
 
 /*
