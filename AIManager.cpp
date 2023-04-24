@@ -165,12 +165,12 @@ void AIManager::keyDown(WPARAM param)
     }
     case VK_NUMPAD0:
     {
-        OutputDebugStringA("0 pressed \n");
+        Seek(m_pRedCar, m_pBlueCar);
         break;
     }
     case VK_NUMPAD1:
     {
-        OutputDebugStringA("1 pressed \n");
+        Flee(m_pRedCar, m_pBlueCar);
         break;
     }
     case VK_NUMPAD2:
@@ -218,19 +218,21 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
 
 void AIManager::Wander(Vehicle* car)
 {
-    /*
-    Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount()); //pick random waypoint
-    car->forceTemp(randWp->getPosition(), SEEK_MESSAGE); //get position and go to wp
-    */
-    
-    Waypoint* randWp = m_waypointManager.getNearestWaypoint(car->getPosition());
-    if (randWp != nullptr)
-    {
-        vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(randWp);
-        randWp = m_waypointManager.getWaypoint(std::rand() % vwps.size()); //pick rand from neighbour waypoints
-        car->forceTemp(randWp->getPosition(), SEEK_MESSAGE); //get pos and go to wp
+    int x = (rand() % SCREEN_WIDTH) - (SCREEN_WIDTH / 2);
+    int y = (rand() % SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2);
+
+    Waypoint* wp = m_waypointManager.getNearestWaypoint(Vector2D(x, y));
+    if (wp) {
+        car->forceTemp(wp->getPosition(), SEEK_MESSAGE);
     }
-    
+}
+
+void AIManager::Seek(Vehicle* seeker, Vehicle* target)
+{
+}
+
+void AIManager::Flee(Vehicle* flee, Vehicle* target)
+{
 }
 
 /*

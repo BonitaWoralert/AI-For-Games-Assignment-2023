@@ -87,6 +87,7 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 
 void Vehicle::forceTemp(Vector2D positionTo, string name)
 {
+	
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
 	force = positionTo - posFrom;
@@ -94,9 +95,12 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 	// normalise this (make it length 1)
 	force.Normalize();
 	
+	if (getForceMotion()->getVelocity().Length() < 1)
+	{
 	//getForceMotion()->applyForce(force);
 	getForceMotion()->accummulateForce(force);
-	getForceMotion()->accummulateForce(brakingForce);
+	//getForceMotion()->accummulateForce(brakingForce);
+	}
 
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
@@ -134,28 +138,7 @@ void Vehicle::updateMessages(const float deltaTime)
 		MessagePosition msg = *messageIterator;
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
-			Vector2D differenceVector = msg.position - getPosition();
-			if (differenceVector.Length() < BRAKE_RADIUS)
-			{
-				int test = differenceVector.Length();
-				Vector2D currentTravel = msg.position - getPosition();
-				int test2 = currentTravel.Length();
-
-				float percentTravelled = currentTravel.Length() / differenceVector.Length();
-				brakingForce = force * percentTravelled;
-				// 
-				//slow down car by calculating remaining distance aS PERCENTAGE
-				//apply braking force in oppoiste direction by force * percentage
-
-				/*
-				
-				currentLength = (end pos - current pos).length 
-				totalLength = (endpos - startpos).length
-
-				currentLength / totalLength = percentTravelled;
-				brakeForce *= percentTravelled;
-				*/
-
+			Vector2D differenceVector = getPosition() - msg.position;
 
 				// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 				if (differenceVector.Length() < SEEK_RADIUS)
@@ -166,7 +149,7 @@ void Vehicle::updateMessages(const float deltaTime)
 					messageIterator = m_vecMessages.erase(messageIterator);
 					continue; // continue the next loop (we don't want to increment below as this will skip an item)
 				}
-			}
+			
 		}
 		messageIterator++; // incremenet the iterator
 	}

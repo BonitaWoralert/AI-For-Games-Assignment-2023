@@ -24,6 +24,9 @@ protected:
 	bool	checkForCollisions();
 	void	setRandomPickupPosition(PickupItem* pickup);
 	void	Wander(Vehicle* car);
+	void	Seek(Vehicle* seeker, Vehicle* target);
+	void	Flee(Vehicle* flee, Vehicle* target);
+
 
 private:
 	vecPickups              m_pickups;
