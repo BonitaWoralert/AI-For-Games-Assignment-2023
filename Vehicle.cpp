@@ -1,4 +1,5 @@
 #include "Vehicle.h"
+#include <iostream>
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
@@ -43,6 +44,8 @@ void Vehicle::update(const float deltaTime)
 
 	// rotate the object based on its last & current position
 	Vector2D diff = m_currentPosition - m_lastPosition;
+	whisker = m_currentPosition + diff;
+	
 	if (diff.Length() > 0) { // if zero then don't update rotation
 		diff.Normalize();
 		m_radianRotation = atan2f((float)diff.y, (float)diff.x); // this is used by DrawableGameObject to set the rotation

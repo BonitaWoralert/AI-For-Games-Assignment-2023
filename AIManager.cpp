@@ -54,7 +54,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pBlueCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
-
+    
     // setup the waypoints
     m_waypointManager.createWaypoints(pd3dDevice);
     m_pRedCar->setWaypointManager(&m_waypointManager);
