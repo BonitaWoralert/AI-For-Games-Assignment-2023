@@ -5,6 +5,7 @@
 #include "Vector2D.h"
 #include "Collidable.h"
 #include "ForceMotion.h"
+#include "CollisionHelper.h"
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
@@ -54,7 +55,9 @@ protected: // protected properties
 	Vector2D m_lastPosition;
 	Vector2D force;
 	Vector2D brakingForce;
+
 	Vector2D whisker;
+	BoundingBox bb;
 
 	WaypointManager* m_waypointManager;
 	ForceMotion m_forceMotion;

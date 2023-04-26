@@ -1,6 +1,14 @@
-﻿  Vehicle.cpp
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(17,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(74,19): warning C4458: declaration of 'force' hides class member
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(55,11): message : see declaration of 'Vehicle::force'
-C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(144,42): warning C4100: 'deltaTime': unreferenced formal parameter
+﻿  AIManager.cpp
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(18,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(17,25): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(103,18): warning C4456: declaration of 'wp' hides previous local declaration
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(99,15): message : see declaration of 'wp'
+  Vehicle.cpp
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(18,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(75,19): warning C4458: declaration of 'force' hides class member
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(56,11): message : see declaration of 'Vehicle::force'
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(145,42): warning C4100: 'deltaTime': unreferenced formal parameter
+  main.cpp
+C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(18,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+  Generating Code...
   AIFramework.vcxproj -> C:\Users\w017620l\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

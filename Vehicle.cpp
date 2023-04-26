@@ -52,6 +52,8 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 
+	//bb = CollisionHelper::createBoundingBoxFromPoints()
+
 	// set the current poistion for the drawablegameobject
 	setPosition(m_currentPosition);
 
