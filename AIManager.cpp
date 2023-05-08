@@ -32,13 +32,17 @@ void AIManager::release()
 	}
 	m_pickups.clear();
 
+    //delete both cars
 	delete m_pRedCar;
     m_pRedCar = nullptr;
+
+    delete m_pBlueCar;
+    m_pBlueCar = nullptr;
 }
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
-    // create the vehicle 
+    // create red vehicle 
     float xPos = -500;
     float yPos = 300;
 
@@ -64,9 +68,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     hr = pPickupPassenger->initMesh(pd3dDevice, pickuptype::Passenger);
     m_pickups.push_back(pPickupPassenger);
 
-    // NOTE!! for fuel and speedboost - you will need to create these here yourself!
-
-    // (needs to be done after waypoint setup)
     setRandomPickupPosition(pPickupPassenger);
 
     return hr;
@@ -93,8 +94,7 @@ void AIManager::update(const float fDeltaTime)
         AddItemToDrawList(m_pickups[i]);
     }
 
-	// draw the waypoints nearest to the red car
-	
+	// draw the waypoints nearest to the blue car
     
     Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pBlueCar->getPosition());
 	if (wp != nullptr)
