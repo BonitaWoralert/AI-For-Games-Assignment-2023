@@ -9,6 +9,7 @@
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
+#define FLEE_MESSAGE "FLEE"
 #define SEEK_RADIUS 10
 
 typedef struct MessagePosition

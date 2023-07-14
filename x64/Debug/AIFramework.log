@@ -1,6 +1,6 @@
-﻿  Vehicle.cpp
-C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(18,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(76,19): warning C4458: declaration of 'force' hides class member
-C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(58,11): message : see declaration of 'Vehicle::force'
-C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(166,42): warning C4100: 'deltaTime': unreferenced formal parameter
+﻿  AIManager.cpp
+C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(19,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(17,25): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(103,18): warning C4456: declaration of 'wp' hides previous local declaration
+C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(99,15): message : see declaration of 'wp'
   AIFramework.vcxproj -> C:\Users\Bonita\Documents\GitHub\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

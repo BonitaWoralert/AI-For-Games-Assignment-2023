@@ -147,6 +147,26 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 	addMessage(message);
 }
 
+void Vehicle::Flee(Vector2D targetPos, string name)
+{
+	Vector2D currentPos = getPosition();
+	Vector2D unitVec = currentPos - targetPos;
+	unitVec.Normalize();
+
+	Vector2D desiredVelo = unitVec * MAX_SPEED;
+
+	Vector2D currentVelo = getForceMotion()->getVelocity();
+
+	Vector2D fleeForce = desiredVelo - currentVelo;
+
+	getForceMotion()->accummulateForce(fleeForce);
+
+	MessagePosition message;
+	message.name = name;
+	message.position = targetPos;
+	addMessage(message);
+}
+
 void Vehicle::setWaypointManager(WaypointManager* wpm)
 {
 	m_waypointManager = wpm;
@@ -171,6 +191,18 @@ void Vehicle::updateMessages(const float deltaTime)
 	while (messageIterator != m_vecMessages.end())
 	{
 		MessagePosition msg = *messageIterator;
+		
+		if (msg.name.compare(FLEE_MESSAGE) == 0)
+		{
+			Vector2D differenceVector = getPosition() - msg.position;
+			if (differenceVector.Length() > 200)
+			{
+				messageReceived(msg);
+
+				messageIterator = m_vecMessages.erase(messageIterator);
+				continue;
+			}
+		}
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
 			Vector2D differenceVector = getPosition() - msg.position;
@@ -186,6 +218,7 @@ void Vehicle::updateMessages(const float deltaTime)
 				}
 			
 		}
+		
 		messageIterator++; // incremenet the iterator
 	}
 
@@ -200,6 +233,8 @@ void Vehicle::messageReceived(MessagePosition message)
 		// stop the car (how?)
 		m_forceMotion.clearForce();
 	}
+	if (message.name.compare(FLEE_MESSAGE) == 0)
+		m_forceMotion.clearForce();
 }
 
 

@@ -43,8 +43,8 @@ void AIManager::release()
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
     // create red vehicle 
-    float xPos = -500;
-    float yPos = 300;
+    float xPos = 0;
+    float yPos = 0;
 
     m_pRedCar = new Vehicle();
     HRESULT hr = m_pRedCar->initMesh(pd3dDevice, carColour::redCar);
@@ -137,6 +137,7 @@ void AIManager::mouseUp(int x, int y)
 {
     //m_pRedCar->forceTemp(Vector2D(x, y), SEEK_MESSAGE);
     m_pRedCar->Seek(Vector2D(x, y), SEEK_MESSAGE);
+    //m_pRedCar->Flee(Vector2D(x, y), FLEE_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -174,9 +175,12 @@ void AIManager::keyDown(WPARAM param)
     }
     case VK_NUMPAD1:
     {
+        //m_pRedCar->Flee(m_pBlueCar->getPosition(), FLEE_MESSAGE);
+        
         OutputDebugStringA("fleeing");
         m_flee = !m_flee;
         break;
+        
     }
     case VK_NUMPAD2:
     {
@@ -239,11 +243,14 @@ void AIManager::Seek(Vehicle* seeker, Vehicle* target)
 
 void AIManager::Flee(Vehicle* flee, Vehicle* target)
 {
+    /*
     if (flee->getPosition().Distance(target->getPosition()) < 350.0f) // check distance between fleeing car and target
     {
         Vector2D location = target->getPosition().GetReverse(); //reverse the position of the target
         flee->forceTemp(location, SEEK_MESSAGE);
     }
+    */
+    flee->Flee(target->getPosition(), FLEE_MESSAGE);
 }
 
 /*
