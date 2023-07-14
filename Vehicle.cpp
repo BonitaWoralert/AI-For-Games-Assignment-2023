@@ -3,6 +3,7 @@
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
+#define FLEE_MESSAGE "FLEE"
 #define SEEK_RADIUS 10
 #define MAX_SPEED 1
 
@@ -11,7 +12,6 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_currentPosition = Vector2D(0,0);
 	m_lastPosition = Vector2D(0, 0);
 	m_waypointManager = nullptr;
-
 }
 
 HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
@@ -125,6 +125,26 @@ void Vehicle::arrive(Vector2D positionTo, string name)
 	desiredvelocity.Normalize();
 	desiredvelocity*deceleration;
 
+}
+
+void Vehicle::Seek(Vector2D targetPos, string name)
+{
+	Vector2D currentPos = getPosition();
+	Vector2D unitVec = targetPos - currentPos;
+	unitVec.Normalize();
+
+	Vector2D desiredVelo = unitVec * MAX_SPEED;
+
+	Vector2D currentVelo = getForceMotion()->getVelocity();
+
+	Vector2D seekForce = desiredVelo - currentVelo;
+
+	getForceMotion()->accummulateForce(seekForce);
+
+	MessagePosition message;
+	message.name = name;
+	message.position = targetPos;
+	addMessage(message);
 }
 
 void Vehicle::setWaypointManager(WaypointManager* wpm)
