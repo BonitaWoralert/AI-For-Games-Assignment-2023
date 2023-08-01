@@ -9,8 +9,12 @@ HRESULT	PickupItem::initMesh(ID3D11Device* pd3dDevice, pickuptype type)
 	// set the graphic for the type of pickup
 	if(m_type == pickuptype::Fuel)
 		setTextureName(L"Resources\\pickup_fuel.dds");
+
+
 	else if (m_type == pickuptype::Passenger)
 		setTextureName(L"Resources\\pickup_passenger.dds");
+
+
 	else
 		setTextureName(L"Resources\\pickup_speedboost.dds");
 

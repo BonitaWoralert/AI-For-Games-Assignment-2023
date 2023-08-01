@@ -149,6 +149,7 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 	Vector2D desiredVelo = unitVec * MAX_SPEED;
 
 	Vector2D currentVelo = getForceMotion()->getVelocity();
+	currentVelo.Normalize();
 
 	Vector2D seekForce = desiredVelo - currentVelo;
 
@@ -170,6 +171,7 @@ void Vehicle::Flee(Vector2D targetPos, string name)
 	Vector2D desiredVelo = unitVec * MAX_SPEED;
 
 	Vector2D currentVelo = getForceMotion()->getVelocity();
+	currentVelo.Normalize();
 
 	Vector2D fleeForce = desiredVelo - currentVelo;
 

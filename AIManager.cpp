@@ -68,7 +68,19 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     hr = pPickupPassenger->initMesh(pd3dDevice, pickuptype::Passenger);
     m_pickups.push_back(pPickupPassenger);
 
+    //create fuel
+    PickupItem* pPickupFuel = new PickupItem();
+    hr = pPickupFuel->initMesh(pd3dDevice, pickuptype::Fuel);
+    m_pickups.push_back(pPickupFuel);
+
+    //create speedboost
+    PickupItem* pPickupBoost = new PickupItem();
+    hr = pPickupBoost->initMesh(pd3dDevice, pickuptype::SpeedBoost);
+    m_pickups.push_back(pPickupBoost);
+
     setRandomPickupPosition(pPickupPassenger);
+    setRandomPickupPosition(pPickupFuel);
+    setRandomPickupPosition(pPickupBoost);
 
     return hr;
 }
@@ -129,7 +141,8 @@ void AIManager::update(const float fDeltaTime)
     if (m_pBlueCar != nullptr)
     {
         m_pBlueCar->update(fDeltaTime);
-        Wander(m_pBlueCar);
+        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        //Wander(m_pBlueCar);
         AddItemToDrawList(m_pBlueCar);
     }
 }
@@ -245,26 +258,11 @@ void AIManager::Seek(Vehicle* seeker, Vehicle* target)
 
 void AIManager::Flee(Vehicle* flee, Vehicle* target)
 {
-    /*
     if (flee->getPosition().Distance(target->getPosition()) < 350.0f) // check distance between fleeing car and target
     {
-        Vector2D location = target->getPosition().GetReverse(); //reverse the position of the target
-        flee->forceTemp(location, SEEK_MESSAGE);
-    }
-    */
-    flee->Flee(target->getPosition(), FLEE_MESSAGE);
-    //flee->Flee(Vector2D(0, 0), FLEE_MESSAGE);    
+        flee->Flee(target->getPosition(), FLEE_MESSAGE);
+    }   
 }
-
-/*
-// hello. This is hopefully the only time you may need to use and alter directx code 
-// the relevant #includes are already in place, but if you create your own collision class (or use this code anywhere else) 
-// make sure you have the following:
-
-#include <d3d11_1.h> // this has the appropriate directx structures / objects
-#include <DirectXCollision.h> // this is the dx collision class helper
-using namespace DirectX; // this means you don't need to put DirectX:: in front of objects like XMVECTOR and so on. 
-*/
 
 bool AIManager::checkForCollisions()
 {
@@ -295,6 +293,7 @@ bool AIManager::checkForCollisions()
     // to get the passenger, fuel or speedboost specifically you will need to iterate the pickups and test their type (getType()) - see the pickup class
     XMVECTOR puPos;
     XMVECTOR puScale;
+    
     XMMatrixDecompose(
         &puScale,
         &dummy,
@@ -314,6 +313,8 @@ bool AIManager::checkForCollisions()
         OutputDebugStringA("Pickup passenger collision\n");
         m_pickups[0]->hasCollided();
         setRandomPickupPosition(m_pickups[0]);
+
+        
 
         // you will need to test the type of the pickup to decide on the behaviour
         // m_pRedCar->dosomething(); ...
