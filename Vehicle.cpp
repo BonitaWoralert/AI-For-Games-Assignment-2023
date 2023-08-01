@@ -67,6 +67,13 @@ void Vehicle::setPosition(Vector2D position)
 	DrawableGameObject::setPosition(position);
 }
 
+void Vehicle::setWaypointManager(WaypointManager* wpm)
+{
+	m_waypointManager = wpm;
+}
+
+#pragma region OLD MOVEMENT CODE
+
 void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 {
 
@@ -81,7 +88,7 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
-	// note: this has been done for you in the updateMessages function. 
+	// note: this has been done for you in the updateMessages function.
 	MessagePosition message;
 	message.name = name;
 	message.position = positionTo;
@@ -92,14 +99,14 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 
 void Vehicle::forceTemp(Vector2D positionTo, string name)
 {
-	
+
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
 	force = positionTo - posFrom;
-	
+
 	// normalise this (make it length 1)
 	force.Normalize();
-	
+
 	if (getForceMotion()->getVelocity().Length() < MAX_SPEED)
 	{
 	//getForceMotion()->applyForce(force);
@@ -109,7 +116,7 @@ void Vehicle::forceTemp(Vector2D positionTo, string name)
 
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
-	// note: this has been done for you in the updateMessages function. 
+	// note: this has been done for you in the updateMessages function.
 	MessagePosition message;
 	message.name = name;
 	message.position = positionTo;
@@ -127,8 +134,14 @@ void Vehicle::arrive(Vector2D positionTo, string name)
 
 }
 
+
+#pragma endregion
+
+#pragma region NEW FORCE BASED MOVEMENT (REFERRAL)
+
 void Vehicle::Seek(Vector2D targetPos, string name)
 {
+
 	Vector2D currentPos = getPosition();
 	Vector2D unitVec = targetPos - currentPos;
 	unitVec.Normalize();
@@ -139,7 +152,7 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 
 	Vector2D seekForce = desiredVelo - currentVelo;
 
-	getForceMotion()->accummulateForce(seekForce);
+	m_forceMotion.accummulateForce(seekForce);
 
 	MessagePosition message;
 	message.name = name;
@@ -149,6 +162,7 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 
 void Vehicle::Flee(Vector2D targetPos, string name)
 {
+
 	Vector2D currentPos = getPosition();
 	Vector2D unitVec = currentPos - targetPos;
 	unitVec.Normalize();
@@ -167,11 +181,9 @@ void Vehicle::Flee(Vector2D targetPos, string name)
 	addMessage(message);
 }
 
-void Vehicle::setWaypointManager(WaypointManager* wpm)
-{
-	m_waypointManager = wpm;
-}
+#pragma endregion
 
+#pragma region MESSAGING SYSTEM
 
 // -------------------------------------------------------------------------------
 // a really rubbish messaging system.. there is clearly a better way to do this...
@@ -192,17 +204,6 @@ void Vehicle::updateMessages(const float deltaTime)
 	{
 		MessagePosition msg = *messageIterator;
 		
-		if (msg.name.compare(FLEE_MESSAGE) == 0)
-		{
-			Vector2D differenceVector = getPosition() - msg.position;
-			if (differenceVector.Length() > 200)
-			{
-				messageReceived(msg);
-
-				messageIterator = m_vecMessages.erase(messageIterator);
-				continue;
-			}
-		}
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
 			Vector2D differenceVector = getPosition() - msg.position;
@@ -218,6 +219,17 @@ void Vehicle::updateMessages(const float deltaTime)
 				}
 			
 		}
+		if (msg.name.compare(FLEE_MESSAGE) == 0)
+		{
+			Vector2D differenceVector = getPosition() - msg.position;
+			if (differenceVector.Length() > 200)
+			{
+				messageReceived(msg);
+
+				messageIterator = m_vecMessages.erase(messageIterator);
+				continue;
+			}
+		}
 		
 		messageIterator++; // incremenet the iterator
 	}
@@ -229,12 +241,10 @@ void Vehicle::messageReceived(MessagePosition message)
 {
 	if (message.name.compare(SEEK_MESSAGE) == 0)
 	{
-		// Tutorial Todo
-		// stop the car (how?)
 		m_forceMotion.clearForce();
 	}
 	if (message.name.compare(FLEE_MESSAGE) == 0)
 		m_forceMotion.clearForce();
 }
 
-
+#pragma endregion

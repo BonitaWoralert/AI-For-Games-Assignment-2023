@@ -113,6 +113,7 @@ void AIManager::update(const float fDeltaTime)
     
     if (m_flee)
     {
+        //m_pRedCar->Flee(m_pBlueCar->getPosition(), FLEE_MESSAGE);
         Flee(m_pRedCar, m_pBlueCar);
     }
 
@@ -192,7 +193,7 @@ void AIManager::keyDown(WPARAM param)
         //go to random waypoint
         
         Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
-        m_pRedCar->forceTemp(randWp->getPosition(), SEEK_MESSAGE);
+        m_pRedCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
 
         OutputDebugStringA("a Down \n");
         break;
@@ -231,14 +232,15 @@ void AIManager::Wander(Vehicle* car)
     int y = (rand() % SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2);
 
     Waypoint* wp = m_waypointManager.getNearestWaypoint(Vector2D(x, y));
-    if (wp) {
-        car->forceTemp(wp->getPosition(), SEEK_MESSAGE);
+    if (wp) 
+    {
+        car->Seek(wp->getPosition() , SEEK_MESSAGE);
     }
 }
 
 void AIManager::Seek(Vehicle* seeker, Vehicle* target)
 {
-    seeker->forceTemp(target->getPosition(), SEEK_MESSAGE); //go towards target
+    //seeker->Seek(target->getPosition(), SEEK_MESSAGE); //go towards target
 }
 
 void AIManager::Flee(Vehicle* flee, Vehicle* target)
@@ -251,6 +253,7 @@ void AIManager::Flee(Vehicle* flee, Vehicle* target)
     }
     */
     flee->Flee(target->getPosition(), FLEE_MESSAGE);
+    //flee->Flee(Vector2D(0, 0), FLEE_MESSAGE);    
 }
 
 /*
