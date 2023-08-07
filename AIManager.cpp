@@ -294,34 +294,46 @@ bool AIManager::checkForCollisions()
     
     XMVECTOR puPos;
     XMVECTOR puScale;
+    vector<BoundingSphere> PU;
+    BoundingSphere boundingSpherePU_1;
+    BoundingSphere boundingSpherePU_2;
+    BoundingSphere boundingSpherePU_3;
+    PU.push_back(boundingSpherePU_1);
+    PU.push_back(boundingSpherePU_2);
+    PU.push_back(boundingSpherePU_3);
     
-    XMMatrixDecompose(
-        &puScale,
-        &dummy,
-        &puPos,
-        XMLoadFloat4x4(m_pickups[0]->getTransform())
-    );
-
-    // bounding sphere for pickup item
-    XMStoreFloat3(&scale, puScale);
-    BoundingSphere boundingSpherePU;
-    XMStoreFloat3(&boundingSpherePU.Center, puPos);
-    boundingSpherePU.Radius = scale.x;
-
-    // does the car bounding sphere collide with the pickup bounding sphere?
-    if (boundingSphereCar.Intersects(boundingSpherePU))
+    for (int i = 0; i < 3; i++)
     {
-        OutputDebugStringA("Pickup passenger collision\n");
-        m_pickups[0]->hasCollided();
-        setRandomPickupPosition(m_pickups[0]);
+        XMMatrixDecompose(
+            &puScale,
+            &dummy,
+            &puPos,
+            XMLoadFloat4x4(m_pickups[i]->getTransform())
+        );
 
+        // bounding sphere for pickup item
+        XMStoreFloat3(&scale, puScale);
+        XMStoreFloat3(&PU[i].Center, puPos);
+        PU[i].Radius = scale.x;
+        //XMStoreFloat3(&boundingSpherePU.Center, puPos);
+        //boundingSpherePU.Radius = scale.x;
         
+        // does the car bounding sphere collide with the pickup bounding sphere?
+    
+        if (boundingSphereCar.Intersects(PU[i]))
+        {
+            //m_pickups[i]->getType();
+            OutputDebugStringA("collision\n");
+            m_pickups[i]->hasCollided();
+            setRandomPickupPosition(m_pickups[i]);
 
-        // you will need to test the type of the pickup to decide on the behaviour
-        // m_pRedCar->dosomething(); ...
+            // you will need to test the type of the pickup to decide on the behaviour
+            // m_pRedCar->dosomething(); ...
 
-        return true;
+            return true;
+        }
     }
+
 
     return false;
 }
