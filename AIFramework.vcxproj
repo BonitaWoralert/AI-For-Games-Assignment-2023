@@ -363,9 +363,12 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
+    <ClCompile Include="Control.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DrawableGameObject.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
+    <ClCompile Include="FSMMachine.cpp" />
+    <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
@@ -380,9 +383,13 @@
     <ClInclude Include="Collidable.h" />
     <ClInclude Include="CollisionHelper.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="Control.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="ForceMotion.h" />
+    <ClInclude Include="FSM.h" />
+    <ClInclude Include="FSMMachine.h" />
+    <ClInclude Include="FSMState.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

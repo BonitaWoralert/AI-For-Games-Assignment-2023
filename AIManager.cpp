@@ -291,6 +291,7 @@ bool AIManager::checkForCollisions()
     // do the same for a pickup item
     // a pickup - !! NOTE it is only referring the first one in the list !!
     // to get the passenger, fuel or speedboost specifically you will need to iterate the pickups and test their type (getType()) - see the pickup class
+    
     XMVECTOR puPos;
     XMVECTOR puScale;
     
