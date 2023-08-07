@@ -4,6 +4,7 @@
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define FLEE_MESSAGE "FLEE"
+#define ARRIVE_MESSAGE "ARRIVE"
 #define SEEK_RADIUS 10
 #define MAX_SPEED 1
 
@@ -161,6 +162,52 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 	addMessage(message);
 }
 
+void Vehicle::Arrive(Vector2D targetPos, string name)
+{
+	float deceleration = 0.5;
+	Vector2D currentPos = getPosition();
+	Vector2D arrivePos = targetPos - currentPos;
+	arrivePos.Normalize();
+
+	Vector2D arriveSpeed = arrivePos * deceleration;
+
+	Vector2D desiredVelo = arrivePos * arriveSpeed;
+
+	Vector2D currentVelo = getForceMotion()->getVelocity();
+	currentVelo.Normalize();
+
+	Vector2D arriveForce = desiredVelo - currentVelo;
+
+	m_forceMotion.accummulateForce(arriveForce);
+
+	MessagePosition message;
+	message.name = name;
+	message.position = targetPos;
+	addMessage(message);
+}
+
+void Vehicle::Wander()
+{
+	float fRandomDot = (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.0)))-1;
+	float radian = acos(fRandomDot);
+
+	int direction = rand() % 2;
+	if (direction == 1)
+	{
+		radian += 3.14159;
+	}
+	float xPos = cos(radian) - sin(radian);
+	float yPos = sin(radian) + cos(radian);
+
+	Vector2D wanderDirection = Vector2D(xPos, yPos);
+	wanderDirection.Normalize();
+
+	Vector2D wanderPosition = getPosition();
+	wanderPosition += wanderDirection * MAX_SPEED;
+
+	Seek(wanderPosition, SEEK_MESSAGE);
+}
+
 void Vehicle::Flee(Vector2D targetPos, string name)
 {
 
@@ -182,6 +229,7 @@ void Vehicle::Flee(Vector2D targetPos, string name)
 	message.position = targetPos;
 	addMessage(message);
 }
+
 
 #pragma endregion
 
@@ -231,6 +279,21 @@ void Vehicle::updateMessages(const float deltaTime)
 				messageIterator = m_vecMessages.erase(messageIterator);
 				continue;
 			}
+		}
+		if (msg.name.compare(ARRIVE_MESSAGE) == 0)
+		{
+			Vector2D differenceVector = getPosition() - msg.position;
+
+			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
+			if (differenceVector.Length() < SEEK_RADIUS)
+			{
+				messageReceived(msg);
+
+				// delete the message. This will also assign(increment) the iterator to be the next item in the list
+				messageIterator = m_vecMessages.erase(messageIterator);
+				continue; // continue the next loop (we don't want to increment below as this will skip an item)
+			}
+
 		}
 		
 		messageIterator++; // incremenet the iterator

@@ -10,6 +10,7 @@
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define FLEE_MESSAGE "FLEE"
+#define ARRIVE_MESSAGE "ARRIVE"
 #define SEEK_RADIUS 10
 
 typedef struct MessagePosition
@@ -46,6 +47,8 @@ public:
 	//new as of 14/07/23
 	void Seek(Vector2D targetPos, string name);
 	void Flee(Vector2D targetPos, string name);
+	void Arrive(Vector2D targetPos, string name);
+	void Wander();
 
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }

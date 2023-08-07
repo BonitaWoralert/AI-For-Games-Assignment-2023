@@ -141,17 +141,17 @@ void AIManager::update(const float fDeltaTime)
     if (m_pBlueCar != nullptr)
     {
         m_pBlueCar->update(fDeltaTime);
-        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        //m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        //m_pBlueCar->Arrive(m_pRedCar->getPosition(), ARRIVE_MESSAGE);
         //Wander(m_pBlueCar);
+        m_pBlueCar->Wander();
         AddItemToDrawList(m_pBlueCar);
     }
 }
 
 void AIManager::mouseUp(int x, int y)
 {
-    //m_pRedCar->forceTemp(Vector2D(x, y), SEEK_MESSAGE);
     m_pRedCar->Seek(Vector2D(x, y), SEEK_MESSAGE);
-    //m_pRedCar->Flee(Vector2D(x, y), FLEE_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -315,20 +315,29 @@ bool AIManager::checkForCollisions()
         XMStoreFloat3(&scale, puScale);
         XMStoreFloat3(&PU[i].Center, puPos);
         PU[i].Radius = scale.x;
-        //XMStoreFloat3(&boundingSpherePU.Center, puPos);
-        //boundingSpherePU.Radius = scale.x;
         
         // does the car bounding sphere collide with the pickup bounding sphere?
     
         if (boundingSphereCar.Intersects(PU[i]))
         {
-            //m_pickups[i]->getType();
-            OutputDebugStringA("collision\n");
+            pickuptype type = m_pickups[i]->getType();
             m_pickups[i]->hasCollided();
             setRandomPickupPosition(m_pickups[i]);
 
-            // you will need to test the type of the pickup to decide on the behaviour
-            // m_pRedCar->dosomething(); ...
+            switch (type)
+            {
+            case pickuptype::Fuel:
+                OutputDebugStringA("fuel\n");
+                break;
+            case pickuptype::SpeedBoost:
+                OutputDebugStringA("speed boost\n");
+                break;
+            case pickuptype::Passenger:
+                OutputDebugStringA("passenger pickup\n");
+                break;
+            default:
+                break;
+            }
 
             return true;
         }

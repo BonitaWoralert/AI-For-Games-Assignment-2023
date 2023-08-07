@@ -1,10 +1,6 @@
-﻿  FSMMachine.cpp
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(19,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\FSMState.h(14,26): warning C4100: 't': unreferenced formal parameter
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\FSMState.h(16,36): warning C4100: 't': unreferenced formal parameter
-  FSMState.cpp
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(19,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\FSMState.h(14,26): warning C4100: 't': unreferenced formal parameter
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\FSMState.h(16,36): warning C4100: 't': unreferenced formal parameter
-  Generating Code...
+﻿  Vehicle.cpp
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(20,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(83,11): warning C4458: declaration of 'force' hides class member
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(65,11): message : see declaration of 'Vehicle::force'
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(247,42): warning C4100: 'deltaTime': unreferenced formal parameter
   AIFramework.vcxproj -> E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe
