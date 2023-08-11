@@ -35,5 +35,7 @@ private:
 	WaypointManager			m_waypointManager;
 	bool					m_seek = false;
 	bool					m_flee = false;
+
+
 };
 

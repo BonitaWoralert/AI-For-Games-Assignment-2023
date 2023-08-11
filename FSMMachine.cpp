@@ -1,6 +1,6 @@
 #include "FSMMachine.h"
-/*
-void FSMMachine::UpdateMachine(int t)
+
+void FSMMachine::UpdateMachine(float deltaTime)
 {
 	//dont do anything with no state
 	if (m_states.size() == 0)
@@ -14,20 +14,14 @@ void FSMMachine::UpdateMachine(int t)
 
 	//update current state
 	int oldStateID = m_currentState->m_type;
-	//check for a transition
-	m_goalID = m_currentState->CheckTransitions();
 
 	//switch states if there is a transition
-	if (m_goalID != oldStateID)
-	{
-		if (TransitionState(m_goalID))
-		{
-			m_currentState->Exit();
-			m_currentState = m_goalState;
-			m_currentState->Enter();
-		}
-	}
-	m_currentState->Update(t);
+
+	m_currentState->Exit();
+	m_currentState = m_nextState;
+	m_currentState->Enter();
+
+	m_currentState->Update(deltaTime);
 }
 
-*/
+

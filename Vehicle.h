@@ -50,6 +50,9 @@ public:
 	void Arrive(Vector2D targetPos, string name);
 	void Wander();
 
+	void FuelRefill() { fuel = 1.0f; }
+	void SpeedBoost() { speedBoost = 1.5f; }
+
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
 
@@ -73,5 +76,7 @@ protected: // protected properties
 
 	list<MessagePosition> m_vecMessages;
 
+	float fuel;
+	float speedBoost;
 };
 

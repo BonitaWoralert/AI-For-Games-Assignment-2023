@@ -1,21 +1,19 @@
 #pragma once
-#include "Control.h"
+#include "FSM.h"
 
 class FSMState
 {
 public:
-	FSMState(int type = FSM_STATE_NONE, Control* parent = nullptr)
+	FSMState(int type = FSM_STATE_NONE)
 	{
-		m_type = type; m_parent = parent;
+		m_type = type;
 	}
 
 	virtual void Enter() {} //entering state
 	virtual void Exit() {} //exiting state
-	virtual void Update(int t) {} //update each loop
+	virtual void Update(float deltaTime) {} //update each loop
 	virtual void Init() {} //reset state
-	virtual void CheckTransitions(int t) {} //how will the state end/what state will it go to when it finishes
 
-	Control* m_parent;
 	int m_type;
 };
 

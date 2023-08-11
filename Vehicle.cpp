@@ -34,6 +34,9 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 
 	m_lastPosition = Vector2D(0, 0);
 
+	fuel = 1.0f;
+	speedBoost = 1.0f;
+
 	return hr;
 }
 
@@ -52,6 +55,18 @@ void Vehicle::update(const float deltaTime)
 		m_radianRotation = atan2f((float)diff.y, (float)diff.x); // this is used by DrawableGameObject to set the rotation
 	}
 	m_lastPosition = m_currentPosition;
+
+	if (fuel > 0.1 && getForceMotion()->getVelocity() != Vector2D(0, 0))
+	{
+		fuel -= 0.001;
+	}
+
+	if (speedBoost > 1)
+	{
+		speedBoost -= 0.01;
+	}
+
+
 
 	//bb = CollisionHelper::createBoundingBoxFromPoints()
 
@@ -147,12 +162,12 @@ void Vehicle::Seek(Vector2D targetPos, string name)
 	Vector2D unitVec = targetPos - currentPos;
 	unitVec.Normalize();
 
-	Vector2D desiredVelo = unitVec * MAX_SPEED;
+	Vector2D desiredVelo = unitVec; 
 
 	Vector2D currentVelo = getForceMotion()->getVelocity();
 	currentVelo.Normalize();
 
-	Vector2D seekForce = desiredVelo - currentVelo;
+	Vector2D seekForce = (desiredVelo - currentVelo) * fuel * speedBoost;
 
 	m_forceMotion.accummulateForce(seekForce);
 

@@ -63,11 +63,6 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_waypointManager.createWaypoints(pd3dDevice);
     m_pRedCar->setWaypointManager(&m_waypointManager);
 
-    // create a passenger pickup item
-    PickupItem* pPickupPassenger = new PickupItem();
-    hr = pPickupPassenger->initMesh(pd3dDevice, pickuptype::Passenger);
-    m_pickups.push_back(pPickupPassenger);
-
     //create fuel
     PickupItem* pPickupFuel = new PickupItem();
     hr = pPickupFuel->initMesh(pd3dDevice, pickuptype::Fuel);
@@ -77,6 +72,11 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     PickupItem* pPickupBoost = new PickupItem();
     hr = pPickupBoost->initMesh(pd3dDevice, pickuptype::SpeedBoost);
     m_pickups.push_back(pPickupBoost);
+  
+    // create a passenger pickup item
+    PickupItem* pPickupPassenger = new PickupItem();
+    hr = pPickupPassenger->initMesh(pd3dDevice, pickuptype::Passenger);
+    m_pickups.push_back(pPickupPassenger);
 
     setRandomPickupPosition(pPickupPassenger);
     setRandomPickupPosition(pPickupFuel);
@@ -141,12 +141,14 @@ void AIManager::update(const float fDeltaTime)
     if (m_pBlueCar != nullptr)
     {
         m_pBlueCar->update(fDeltaTime);
-        //m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
         //m_pBlueCar->Arrive(m_pRedCar->getPosition(), ARRIVE_MESSAGE);
         //Wander(m_pBlueCar);
-        m_pBlueCar->Wander();
+        //m_pBlueCar->Wander();
         AddItemToDrawList(m_pBlueCar);
     }
+
+
 }
 
 void AIManager::mouseUp(int x, int y)
@@ -183,27 +185,33 @@ void AIManager::keyDown(WPARAM param)
     }
     case VK_NUMPAD0:
     {
-        OutputDebugStringA("seeking");
-        m_seek = !m_seek;
+        OutputDebugStringA("Seeking Fuel\n");
+        m_pRedCar->Seek(m_pickups[0]->getPosition(), SEEK_MESSAGE);
         break;
     }
     case VK_NUMPAD1:
     {
-        //m_pRedCar->Flee(m_pBlueCar->getPosition(), FLEE_MESSAGE);
-        
-        OutputDebugStringA("fleeing");
-        m_flee = !m_flee;
+        OutputDebugStringA("Seeking Speedboost\n");
+        m_pRedCar->Seek(m_pickups[1]->getPosition(), SEEK_MESSAGE);
         break;
         
     }
     case VK_NUMPAD2:
     {
-        OutputDebugStringA("2 pressed \n");
+        OutputDebugStringA("Seeking Passenger\n");
+        m_pRedCar->Seek(m_pickups[2]->getPosition(), SEEK_MESSAGE);
+        break;
+    }
+    case VK_NUMPAD3:
+    {
+        OutputDebugStringA("Refilling fuels\n");
+        m_pBlueCar->FuelRefill();
+        m_pRedCar->FuelRefill();
         break;
     }
     case key_a:
     {
-        //go to random waypoint
+        OutputDebugStringA("Go to random waypoint\n");
         
         Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
         m_pRedCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
@@ -230,6 +238,7 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
     if (pickup == nullptr)
         return;
 
+
     int x = (rand() % SCREEN_WIDTH) - (SCREEN_WIDTH / 2);
     int y = (rand() % SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2);
 
@@ -237,6 +246,7 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
     if (wp) {
         pickup->setPosition(wp->getPosition());
     }
+
 }
 
 void AIManager::Wander(Vehicle* car)
@@ -327,9 +337,11 @@ bool AIManager::checkForCollisions()
             switch (type)
             {
             case pickuptype::Fuel:
+                m_pRedCar->FuelRefill();
                 OutputDebugStringA("fuel\n");
                 break;
             case pickuptype::SpeedBoost:
+                m_pRedCar->SpeedBoost();
                 OutputDebugStringA("speed boost\n");
                 break;
             case pickuptype::Passenger:

@@ -1,6 +1,8 @@
-﻿  Vehicle.cpp
+﻿  AIManager.cpp
 E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(20,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(83,11): warning C4458: declaration of 'force' hides class member
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(65,11): message : see declaration of 'Vehicle::force'
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.cpp(247,42): warning C4100: 'deltaTime': unreferenced formal parameter
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(17,25): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(115,18): warning C4456: declaration of 'wp' hides previous local declaration
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(111,15): message : see declaration of 'wp'
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(264,48): warning C4100: 'target': unreferenced formal parameter
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(264,31): warning C4100: 'seeker': unreferenced formal parameter
   AIFramework.vcxproj -> E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe
