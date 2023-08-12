@@ -53,6 +53,11 @@ public:
 	void FuelRefill() { fuel = 1.0f; }
 	void SpeedBoost() { speedBoost = 1.5f; }
 
+	//FSM
+	void PassengerState();
+	void FuelState();
+	void SpeedBoostState();
+
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
 

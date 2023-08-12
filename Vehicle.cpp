@@ -66,8 +66,6 @@ void Vehicle::update(const float deltaTime)
 		speedBoost -= 0.01;
 	}
 
-
-
 	//bb = CollisionHelper::createBoundingBoxFromPoints()
 
 	// set the current poistion for the drawablegameobject
@@ -150,6 +148,25 @@ void Vehicle::arrive(Vector2D positionTo, string name)
 
 }
 
+
+#pragma endregion
+
+#pragma region	FSM STATES
+
+void Vehicle::PassengerState()
+{
+
+}
+
+void Vehicle::FuelState()
+{
+
+}
+
+void Vehicle::SpeedBoostState()
+{
+
+}
 
 #pragma endregion
 
