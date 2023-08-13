@@ -42,9 +42,15 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 
 void Vehicle::update(const float deltaTime)
 {
+	//update messaging system
 	updateMessages(deltaTime);
-
+	//update forces
 	m_forceMotion.update(deltaTime);
+	//update fsm
+	if (brain.HasState()) //if there is a state
+	{
+		StateManager(brain.GetState()); //state manager will switch to it
+	}
 
 	// rotate the object based on its last & current position
 	Vector2D diff = m_currentPosition - m_lastPosition;
@@ -153,19 +159,37 @@ void Vehicle::arrive(Vector2D positionTo, string name)
 
 #pragma region	FSM STATES
 
+void Vehicle::StateManager(int activeState)
+{
+	switch (activeState)
+	{
+	case 1:
+		FuelState();
+		break;
+	case 2:
+		PassengerState();
+		break;
+	case 3:
+		SpeedBoostState();
+		break;
+	default:
+		break;
+	}
+}
+
 void Vehicle::PassengerState()
 {
-
+	OutputDebugStringA("entered passenger state");
 }
 
 void Vehicle::FuelState()
 {
-
+	OutputDebugStringA("entered fuel state");
 }
 
 void Vehicle::SpeedBoostState()
 {
-
+	OutputDebugStringA("entered speedboost state");
 }
 
 #pragma endregion

@@ -7,6 +7,8 @@
 #include "ForceMotion.h"
 #include "CollisionHelper.h"
 
+#include "FSM.h"
+
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
 #define FLEE_MESSAGE "FLEE"
@@ -54,6 +56,9 @@ public:
 	void SpeedBoost() { speedBoost = 1.5f; }
 
 	//FSM
+
+	void StateManager(int activeState);
+
 	void PassengerState();
 	void FuelState();
 	void SpeedBoostState();
@@ -83,5 +88,7 @@ protected: // protected properties
 
 	float fuel;
 	float speedBoost;
+
+	FSM brain;
 };
 

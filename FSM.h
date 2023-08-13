@@ -19,13 +19,12 @@ public:
 
     void SetState(type newState) { m_activeState = newState; }
 
-    void Update()
-    {
-        if (m_activeState != 0)
-        {
-            //do stuff
-        }
-    }
+    bool HasState() { 
+        if (m_activeState != 0) 
+            return true; 
+        return false; }
+
+    int GetState() { return m_activeState; }
 
 private:
     int m_activeState;
