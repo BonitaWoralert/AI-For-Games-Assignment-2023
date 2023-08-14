@@ -10,4 +10,7 @@ E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.h(64,11): message 
 E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(398,45): warning C4100: 'car': unreferenced formal parameter
 E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(405,52): warning C4100: 'target': unreferenced formal parameter
 E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(405,34): warning C4100: 'pursuit': unreferenced formal parameter
+  main.cpp
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(21,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+  Generating Code...
   AIFramework.vcxproj -> E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

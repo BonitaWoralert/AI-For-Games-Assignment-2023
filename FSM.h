@@ -17,8 +17,6 @@ public:
             m_activeState = type;
 	    }
 
-    //void SetState(type newState) { m_activeState = newState; }
-
     void SetState(int newState) { m_activeState = newState; }
 
     bool HasState() { 

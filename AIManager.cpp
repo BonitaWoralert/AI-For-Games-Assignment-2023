@@ -176,7 +176,6 @@ void AIManager::StateManager(int activeState)
 
 void AIManager::FuelState()
 {
-    OutputDebugStringA("entered fuel state");
     if (m_pRedCar->GetFuel() < 0.25)
     {
         m_pRedCar->Seek(m_pickups[0]->getPosition(), SEEK_MESSAGE); //seek fuel
@@ -194,7 +193,6 @@ void AIManager::FuelState()
 
 void AIManager::PassengerState()
 {
-    OutputDebugStringA("entered passenger state");
     //if low fuel
     if (m_pRedCar->GetFuel() < 0.25)
     {
@@ -212,7 +210,6 @@ void AIManager::PassengerState()
 
 void AIManager::SpeedBoostState()
 {
-    OutputDebugStringA("entered speedboost state");
 
     //seek speedboost
     if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 250)
