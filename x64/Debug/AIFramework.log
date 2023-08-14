@@ -1,8 +1,9 @@
 ﻿  AIManager.cpp
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(20,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\Vehicle.h(21,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
 E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(17,25): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(115,18): warning C4456: declaration of 'wp' hides previous local declaration
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(111,15): message : see declaration of 'wp'
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(264,48): warning C4100: 'target': unreferenced formal parameter
-E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(264,31): warning C4100: 'seeker': unreferenced formal parameter
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(86,9): warning C4458: declaration of 'brain' hides class member
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.h(43,11): message : see declaration of 'AIManager::brain'
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(127,18): warning C4456: declaration of 'wp' hides previous local declaration
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(123,15): message : see declaration of 'wp'
+E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\AIManager.cpp(260,18): warning C4189: 'key_t': local variable is initialized but not referenced
   AIFramework.vcxproj -> E:\gamedev\ai-coding-assignment-2023-BonitaWoralert\x64\Debug\AIFramework.exe

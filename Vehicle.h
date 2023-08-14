@@ -7,7 +7,6 @@
 #include "ForceMotion.h"
 #include "CollisionHelper.h"
 
-#include "FSM.h"
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
@@ -55,13 +54,7 @@ public:
 	void FuelRefill() { fuel = 1.0f; }
 	void SpeedBoost() { speedBoost = 1.5f; }
 
-	//FSM
-
-	void StateManager(int activeState);
-
-	void PassengerState();
-	void FuelState();
-	void SpeedBoostState();
+	float GetFuel() { return fuel; }
 
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
@@ -88,7 +81,5 @@ protected: // protected properties
 
 	float fuel;
 	float speedBoost;
-
-	FSM brain;
 };
 

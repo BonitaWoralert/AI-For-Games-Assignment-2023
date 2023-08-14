@@ -12,12 +12,14 @@ class FSM
 {
 public:
 
-    FSM(int type = FSM_STATE_NONE)
+    FSM(int type)
 	    {
             m_activeState = type;
 	    }
 
-    void SetState(type newState) { m_activeState = newState; }
+    //void SetState(type newState) { m_activeState = newState; }
+
+    void SetState(int newState) { m_activeState = newState; }
 
     bool HasState() { 
         if (m_activeState != 0) 
@@ -26,6 +28,6 @@ public:
 
     int GetState() { return m_activeState; }
 
-private:
     int m_activeState;
+private:
 };

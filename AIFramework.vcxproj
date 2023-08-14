@@ -366,15 +366,11 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DrawableGameObject.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
-    <ClCompile Include="FSMMachine.cpp" />
-    <ClCompile Include="FSMState.cpp" />
-    <ClCompile Include="FuelState.cpp" />
+    <ClCompile Include="FSM.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="PassengerState.cpp" />
     <ClCompile Include="PickupItem.cpp" />
-    <ClCompile Include="SpeedBoostState.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Waypoint.cpp" />
     <ClCompile Include="WaypointManager.cpp" />
@@ -389,16 +385,11 @@
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="FSM.h" />
-    <ClInclude Include="FSMMachine.h" />
-    <ClInclude Include="FSMState.h" />
-    <ClInclude Include="FuelState.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="PassengerState.h" />
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
-    <ClInclude Include="SpeedBoostState.h" />
     <ClInclude Include="structures.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />

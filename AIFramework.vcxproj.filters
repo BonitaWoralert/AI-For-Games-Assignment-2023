@@ -21,11 +21,7 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
-    <ClCompile Include="FSMState.cpp" />
-    <ClCompile Include="FSMMachine.cpp" />
-    <ClCompile Include="FuelState.cpp" />
-    <ClCompile Include="PassengerState.cpp" />
-    <ClCompile Include="SpeedBoostState.cpp" />
+    <ClCompile Include="FSM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -60,12 +56,7 @@
     </ClInclude>
     <ClInclude Include="CollisionHelper.h" />
     <ClInclude Include="ForceMotion.h" />
-    <ClInclude Include="FSMState.h" />
-    <ClInclude Include="FSMMachine.h" />
     <ClInclude Include="FSM.h" />
-    <ClInclude Include="FuelState.h" />
-    <ClInclude Include="PassengerState.h" />
-    <ClInclude Include="SpeedBoostState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">

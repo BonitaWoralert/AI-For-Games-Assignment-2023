@@ -8,10 +8,10 @@
 #include "ForceHelper.h"
 
 
-
 // AI Manager
 
 AIManager::AIManager()
+    : brain(2)
 {
     m_pRedCar = nullptr;
     std::srand(std::time(nullptr)); //use current time as seed for rand
@@ -82,12 +82,24 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     setRandomPickupPosition(pPickupFuel);
     setRandomPickupPosition(pPickupBoost);
 
+    //create FSM
+    FSM brain(2);
+    //initialise a default state
+    brain.SetState(2);
+
     return hr;
 }
 
-
 void AIManager::update(const float fDeltaTime)
 {
+
+    //update fsm
+    if (brain.HasState() && FSMToggle == true) //if there is a state
+    {
+        //state manager will switch to it
+        StateManager(brain.m_activeState);
+    }
+    
     for (unsigned int i = 0; i < m_waypointManager.getWaypointCount(); i++) {
         m_waypointManager.getWaypoint(i)->update(fDeltaTime);
         //AddItemToDrawList(m_waypointManager.getWaypoint(i)); // if you uncomment this, it will display the waypoints
@@ -118,11 +130,6 @@ void AIManager::update(const float fDeltaTime)
 		}
 	}
     
-    if (m_seek)
-    {
-        Seek(m_pRedCar, m_pBlueCar);
-    }
-    
     if (m_flee)
     {
         //m_pRedCar->Flee(m_pBlueCar->getPosition(), FLEE_MESSAGE);
@@ -141,15 +148,89 @@ void AIManager::update(const float fDeltaTime)
     if (m_pBlueCar != nullptr)
     {
         m_pBlueCar->update(fDeltaTime);
-        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
-        //m_pBlueCar->Arrive(m_pRedCar->getPosition(), ARRIVE_MESSAGE);
-        //Wander(m_pBlueCar);
-        //m_pBlueCar->Wander();
+        //m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
         AddItemToDrawList(m_pBlueCar);
     }
-
-
 }
+
+#pragma region	FSM STATES
+
+void AIManager::StateManager(int activeState)
+{
+    switch (activeState)
+    {
+    case 1:
+        FuelState();
+        break;
+    case 2:
+        PassengerState();
+        break;
+    case 3:
+        SpeedBoostState();
+        break;
+    default:
+        break;
+    }
+}
+
+void AIManager::FuelState()
+{
+    OutputDebugStringA("entered fuel state");
+    if (m_pRedCar->GetFuel() < 0.25)
+    {
+        m_pRedCar->Seek(m_pickups[0]->getPosition(), SEEK_MESSAGE); //seek fuel
+    }
+    //if boost near
+    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    {
+        brain.SetState(FSM_STATE_SPEEDBOOST); //boost state
+    }
+    else
+    {
+        brain.SetState(FSM_STATE_PASSENGER); //pickup passengers
+    }
+}
+
+void AIManager::PassengerState()
+{
+    OutputDebugStringA("entered passenger state");
+    //if low fuel
+    if (m_pRedCar->GetFuel() < 0.25)
+    {
+        brain.SetState(FSM_STATE_FUEL); //fuel state
+    }
+    //if boost near
+    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    {
+        brain.SetState(FSM_STATE_SPEEDBOOST); //boost state
+    }
+
+    //seek passenger
+    m_pRedCar->Seek(m_pickups[2]->getPosition(), SEEK_MESSAGE);
+}
+
+void AIManager::SpeedBoostState()
+{
+    OutputDebugStringA("entered speedboost state");
+
+    //seek speedboost
+    if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    {
+        m_pRedCar->Seek(m_pickups[1]->getPosition(), SEEK_MESSAGE);
+    }
+    //if low fuel
+    else if (m_pRedCar->GetFuel() < 0.25)
+    {
+        brain.SetState(FSM_STATE_FUEL); //fuel state
+    }
+    else
+    {
+        //time for passengers
+        brain.SetState(FSM_STATE_PASSENGER);
+    }
+}
+
+#pragma endregion
 
 void AIManager::mouseUp(int x, int y)
 {
@@ -172,59 +253,83 @@ void AIManager::keyUp(WPARAM param)
 void AIManager::keyDown(WPARAM param)
 {
     // hint 65-90 are a-z
+    const WPARAM key_1 = 49;
+
     const WPARAM key_a = 65;
     const WPARAM key_s = 83;
-    const WPARAM key_t = 84;
-    const WPARAM key_space = 32;
+    const WPARAM key_w = 87;
+    const WPARAM key_p = 80;
+    const WPARAM key_f = 70;
+
 
     switch (param)
     {
-    case key_space:
+    //toggle between Steering / FSM AI
+    case key_1:
     {
+        FSMToggle = !FSMToggle;
         break;
     }
+    //debug stuff
     case VK_NUMPAD0:
     {
-        OutputDebugStringA("Seeking Fuel\n");
+        //seek fuel
         m_pRedCar->Seek(m_pickups[0]->getPosition(), SEEK_MESSAGE);
         break;
     }
     case VK_NUMPAD1:
     {
-        OutputDebugStringA("Seeking Speedboost\n");
+        //seek speedboost
         m_pRedCar->Seek(m_pickups[1]->getPosition(), SEEK_MESSAGE);
         break;
         
     }
     case VK_NUMPAD2:
     {
-        OutputDebugStringA("Seeking Passenger\n");
+        //seek passenger
         m_pRedCar->Seek(m_pickups[2]->getPosition(), SEEK_MESSAGE);
         break;
     }
     case VK_NUMPAD3:
     {
-        OutputDebugStringA("Refilling fuels\n");
+        //manual fuel refill
         m_pBlueCar->FuelRefill();
         m_pRedCar->FuelRefill();
         break;
     }
+    //steering behaviours
     case key_a:
     {
-        OutputDebugStringA("Go to random waypoint\n");
-        
+        //Arrive at random waypoint
         Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
-        m_pRedCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
+        m_pBlueCar->Arrive(randWp->getPosition(), SEEK_MESSAGE);
 
-        OutputDebugStringA("a Down \n");
         break;
     }
     case key_s:
     {
+        //Go to random waypoint
+        Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
+        m_pBlueCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
+
         break;
     }
-    case key_t:
+    case key_w:
     {
+        //wander
+        Wander(m_pBlueCar);
+        break;
+    }
+    case key_p:
+    {
+        //pursuit
+        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        break;
+    }
+    case key_f:
+    {
+        //flee
+        Flee(m_pBlueCar, m_pRedCar);
         break;
     }
     // etc
@@ -259,11 +364,6 @@ void AIManager::Wander(Vehicle* car)
     {
         car->Seek(wp->getPosition() , SEEK_MESSAGE);
     }
-}
-
-void AIManager::Seek(Vehicle* seeker, Vehicle* target)
-{
-    //seeker->Seek(target->getPosition(), SEEK_MESSAGE); //go towards target
 }
 
 void AIManager::Flee(Vehicle* flee, Vehicle* target)
