@@ -52,7 +52,7 @@ public:
 	void Wander();
 
 	void FuelRefill() { fuel = 1.0f; }
-	void SpeedBoost() { speedBoost = 1.5f; }
+	void SpeedBoost() { speedBoost = 2.5f; }
 
 	float GetFuel() { return fuel; }
 

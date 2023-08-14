@@ -10,6 +10,14 @@ class Vehicle;
 class PickupItem;
 typedef vector<PickupItem*> vecPickups;
 
+enum activeSteeringBehaviour
+{
+	STEERING_NONE,
+	STEERING_WANDER,
+	STEERING_PURSUIT,
+	STEERING_FLEE,
+};
+
 class AIManager
 {
 public:
@@ -25,8 +33,6 @@ public:
 protected:
 	bool	checkForCollisions();
 	void	setRandomPickupPosition(PickupItem* pickup);
-	void	Wander(Vehicle* car);
-	void	Flee(Vehicle* flee, Vehicle* target);
 
 	//FSM
 	void StateManager(int activeState);
@@ -34,6 +40,15 @@ protected:
 	void PassengerState();
 	void FuelState();
 	void SpeedBoostState();
+
+	//steering behaviours
+	void SteeringBehaviourManager(int activeBehaviour);
+
+	void	ArriveAtRandomWaypoint(Vehicle* car);
+	void	SeekRandomWaypoint(Vehicle* car);
+	void	Pursuit(Vehicle* pursuit, Vehicle* target);
+	void	Wander(Vehicle* car);
+	void	Flee(Vehicle* flee, Vehicle* target);
 
 private:
 	vecPickups              m_pickups;
@@ -46,6 +61,6 @@ private:
 	bool					m_seek = false;
 	bool					m_flee = false;
 	bool					FSMToggle = true;
-
+	int						activeBehaviour = 0;
 };
 

@@ -11,7 +11,7 @@
 // AI Manager
 
 AIManager::AIManager()
-    : brain(2)
+    : brain(FSM_STATE_PASSENGER)
 {
     m_pRedCar = nullptr;
     std::srand(std::time(nullptr)); //use current time as seed for rand
@@ -82,10 +82,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     setRandomPickupPosition(pPickupFuel);
     setRandomPickupPosition(pPickupBoost);
 
-    //create FSM
-    FSM brain(2);
-    //initialise a default state
-    brain.SetState(2);
+    //create FSM and set default state
+    FSM brain(FSM_STATE_PASSENGER);
 
     return hr;
 }
@@ -99,6 +97,9 @@ void AIManager::update(const float fDeltaTime)
         //state manager will switch to it
         StateManager(brain.m_activeState);
     }
+
+    //update steering behaviours
+    SteeringBehaviourManager(activeBehaviour);
     
     for (unsigned int i = 0; i < m_waypointManager.getWaypointCount(); i++) {
         m_waypointManager.getWaypoint(i)->update(fDeltaTime);
@@ -181,7 +182,7 @@ void AIManager::FuelState()
         m_pRedCar->Seek(m_pickups[0]->getPosition(), SEEK_MESSAGE); //seek fuel
     }
     //if boost near
-    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 250)
     {
         brain.SetState(FSM_STATE_SPEEDBOOST); //boost state
     }
@@ -200,7 +201,7 @@ void AIManager::PassengerState()
         brain.SetState(FSM_STATE_FUEL); //fuel state
     }
     //if boost near
-    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    else if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 250)
     {
         brain.SetState(FSM_STATE_SPEEDBOOST); //boost state
     }
@@ -214,7 +215,7 @@ void AIManager::SpeedBoostState()
     OutputDebugStringA("entered speedboost state");
 
     //seek speedboost
-    if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 200)
+    if ((m_pRedCar->getPosition() - m_pickups[1]->getPosition()).Length() < 250)
     {
         m_pRedCar->Seek(m_pickups[1]->getPosition(), SEEK_MESSAGE);
     }
@@ -260,7 +261,7 @@ void AIManager::keyDown(WPARAM param)
     const WPARAM key_w = 87;
     const WPARAM key_p = 80;
     const WPARAM key_f = 70;
-
+    const WPARAM key_space = 32;
 
     switch (param)
     {
@@ -300,37 +301,32 @@ void AIManager::keyDown(WPARAM param)
     //steering behaviours
     case key_a:
     {
-        //Arrive at random waypoint
-        Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
-        m_pBlueCar->Arrive(randWp->getPosition(), SEEK_MESSAGE);
-
+        ArriveAtRandomWaypoint(m_pBlueCar);
         break;
     }
     case key_s:
     {
-        //Go to random waypoint
-        Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
-        m_pBlueCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
-
+        SeekRandomWaypoint(m_pBlueCar);
         break;
     }
     case key_w:
     {
-        //wander
-        Wander(m_pBlueCar);
+        activeBehaviour = STEERING_WANDER;
         break;
     }
     case key_p:
     {
-        //pursuit
-        m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
+        activeBehaviour = STEERING_PURSUIT;
         break;
     }
     case key_f:
     {
-        //flee
-        Flee(m_pBlueCar, m_pRedCar);
+        activeBehaviour = STEERING_FLEE;
         break;
+    }
+    case key_space:
+    {
+        activeBehaviour = STEERING_NONE;
     }
     // etc
     default:
@@ -354,6 +350,24 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
 
 }
 
+void AIManager::SteeringBehaviourManager(int activeBehaviour)
+{
+    switch (activeBehaviour)
+    {
+        case 1:
+            Wander(m_pBlueCar);
+            break;
+        case 2:
+            Pursuit(m_pBlueCar, m_pRedCar);
+            break;
+        case 3:
+            Flee(m_pBlueCar, m_pRedCar);
+            break;
+        default:
+            break;
+    }
+}
+
 void AIManager::Wander(Vehicle* car)
 {
     int x = (rand() % SCREEN_WIDTH) - (SCREEN_WIDTH / 2);
@@ -372,6 +386,26 @@ void AIManager::Flee(Vehicle* flee, Vehicle* target)
     {
         flee->Flee(target->getPosition(), FLEE_MESSAGE);
     }   
+}
+
+void AIManager::ArriveAtRandomWaypoint(Vehicle* car)
+{
+    //Arrive at random waypoint
+    Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
+    car->Arrive(randWp->getPosition(), SEEK_MESSAGE);
+}
+
+void AIManager::SeekRandomWaypoint(Vehicle* car)
+{
+    //Go to random waypoint
+    Waypoint* randWp = m_waypointManager.getWaypoint(std::rand() % m_waypointManager.getWaypointCount());
+    m_pBlueCar->Seek(randWp->getPosition(), SEEK_MESSAGE);
+}
+
+void AIManager::Pursuit(Vehicle* pursuit, Vehicle* target)
+{
+    //pursuit
+    m_pBlueCar->Seek(m_pRedCar->getPosition(), SEEK_MESSAGE);
 }
 
 bool AIManager::checkForCollisions()

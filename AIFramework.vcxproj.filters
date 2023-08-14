@@ -21,7 +21,6 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
-    <ClCompile Include="FSM.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
